@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /leaderboard/{docId} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasAll(['playerName', 'kills', 'topSpeed', 'lootScrap', 'createdAt'])
+                   && request.resource.data.playerName is string
+                   && request.resource.data.kills is number
+                   && request.resource.data.topSpeed is number
+                   && request.resource.data.lootScrap is number;
+      allow update, delete: if false;
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Jungle Warfare & Pro Driving (9:16)",
+  "description": "High-octane 9:16 portrait FPS combat and pro vehicle driving simulation with drift mechanics, nitro boost, and realistic physics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

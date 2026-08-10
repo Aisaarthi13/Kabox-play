@@ -1,0 +1,17 @@
+{
+  "entities": {
+    "leaderboard": {
+      "title": "Leaderboard Entry",
+      "description": "High score entries submitted by players",
+      "type": "object",
+      "properties": {
+        "playerName": { "type": "string", "description": "Player callsign" },
+        "kills": { "type": "number", "description": "Total enemies eliminated" },
+        "topSpeed": { "type": "number", "description": "Highest driving speed achieved in km/h" },
+        "lootScrap": { "type": "number", "description": "Loot scrap accumulated" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Submission timestamp" }
+      },
+      "required": ["playerName", "kills", "topSpeed", "lootScrap", "createdAt"]
+    }
+  }
+}
