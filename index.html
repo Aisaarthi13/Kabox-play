@@ -20,6 +20,7 @@
             user-select: none;
             -webkit-user-select: none;
             -webkit-touch-callout: none;
+            overscroll-behavior: none;
         }
 
         html, body {
@@ -28,10 +29,13 @@
             background-color: #0b1320;
             font-family: 'Rajdhani', sans-serif;
             overflow: hidden;
+            position: fixed;
+            inset: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             color: #ffffff;
+            overscroll-behavior-y: none;
         }
 
         /* Ambient sunny background pattern */
@@ -1806,8 +1810,45 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
-            max-width: 340px;
+            max-width: 360px;
             animation: bgFadeUp 0.5s ease-out forwards;
+            gap: 8px;
+        }
+
+        .load-status {
+            font-size: 11px;
+            font-weight: 800;
+            color: #38bdf8;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .load-bar-container {
+            width: 100%;
+            height: 14px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 2px solid #38bdf8;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4), inset 0 0 10px rgba(0,0,0,0.8);
+            position: relative;
+        }
+
+        .load-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #10b981 0%, #34d399 50%, #38bdf8 100%);
+            border-radius: 20px;
+            box-shadow: 0 0 25px #34d399;
+            transition: width 0.1s linear;
+        }
+
+        .load-percent {
+            font-family: 'Teko', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            color: #fbbf24;
+            line-height: 1;
         }
 
         #bgPlayPhase {
@@ -1862,28 +1903,28 @@
     <!-- 16:9 WIDESCREEN GAME WRAPPER -->
     <div id="gameWrapper">
 
-        <!-- BOX GAMER INTRO SPLASH SCREEN -->
+        <!-- KABOX GAMER INTRO SPLASH SCREEN -->
         <div id="boxGamerIntro">
-            <div class="bg-studio-badge">🎮 BOX GAMER GAMING STUDIO</div>
-            <h1 class="bg-title-main">BOX GAMER</h1>
+            <div class="bg-studio-badge">🎮 KABOX GAMER GAMING STUDIO</div>
+            <h1 class="bg-title-main">KABOX GAMER</h1>
             <div class="bg-sub-text">PRO 16:9 FPS & COMBAT SIMULATOR</div>
 
-            <!-- PHASE 1: 5 SECONDS INITIAL 3D TITLE SHOWCASE -->
+            <!-- PHASE 1: INITIAL TITLE SHOWCASE WITH FAST LOADING -->
             <div id="bgIntroWaitPhase">
                 <div class="bg-spinner-ring"></div>
-                <div class="bg-wait-label">WELCOME TO BOX GAMER</div>
+                <div class="bg-wait-label">WELCOME TO KABOX GAMER</div>
             </div>
 
-            <!-- PHASE 2: 10 SECONDS ANIMATED LOADER (STARTS AT 5s) -->
+            <!-- PHASE 2: ANIMATED HORIZONTAL LOADING BAR -->
             <div id="bgLoadingPhase">
-                <div class="load-status" id="bgLoadStatus">PREPARING WARFARE ENGINE...</div>
+                <div class="load-status" id="bgLoadStatus">INITIALIZING KABOX WARFARE ENGINE...</div>
                 <div class="load-bar-container">
                     <div class="load-bar-fill" id="bgLoadBarFill"></div>
                 </div>
                 <div class="load-percent" id="bgLoadPercent">0%</div>
             </div>
 
-            <!-- PHASE 3: PLAY OPTION APPEARS AFTER 10s LOADING -->
+            <!-- PHASE 3: PLAY OPTION APPEARS AFTER FAST LOADING -->
             <div id="bgPlayPhase">
                 <button id="introPlayBtn" class="bg-play-btn" onclick="startFromIntro()">▶ PLAY GAME</button>
             </div>
@@ -1892,7 +1933,23 @@
         <!-- START SCREEN & GARAGE MENU -->
         <div id="startScreen">
             <div class="start-col-left">
-                <div class="brand-badge">🏆 TACTICAL FPS 16:9 PRO</div>
+                <div style="display:flex; align-items:center; justify-content:space-between; width:100%; margin-bottom:8px;">
+                    <div class="brand-badge">🏆 TACTICAL FPS 16:9 PRO</div>
+                    
+                    <!-- FIREBASE ACCOUNT BAR -->
+                    <div id="userAccountBar" style="display:flex; align-items:center; gap:8px;">
+                        <button id="openAuthBtn" onclick="openAuthModal()" style="display:flex; align-items:center; gap:6px; background:linear-gradient(135deg, rgba(56,189,248,0.25) 0%, rgba(16,185,129,0.25) 100%); border:1px solid #38bdf8; border-radius:20px; padding:5px 14px; color:#fff; font-family:'Rajdhani',sans-serif; font-size:12px; font-weight:800; cursor:pointer; letter-spacing:1px; box-shadow:0 0 12px rgba(56,189,248,0.3); transition:all 0.2s;">
+                            <span>🔥 LOGIN / REGISTER</span>
+                        </button>
+                        <div id="userProfileBadge" onclick="openProfileModal()" style="display:none; align-items:center; gap:8px; background:rgba(15,23,42,0.85); border:1px solid #34d399; border-radius:20px; padding:4px 12px; cursor:pointer; box-shadow:0 0 12px rgba(52,211,153,0.3);">
+                            <img id="userAvatarImg" src="" alt="" style="width:22px; height:22px; border-radius:50%; object-fit:cover; display:none;" />
+                            <span id="userAvatarIcon" style="font-size:14px;">🪖</span>
+                            <span id="userDisplayName" style="font-weight:800; font-size:13px; color:#34d399;">SOLDIER</span>
+                            <span style="font-size:10px; color:#fbbf24; background:rgba(251,191,36,0.2); padding:1px 6px; border-radius:10px; font-weight:800;">PRO</span>
+                        </div>
+                    </div>
+                </div>
+
                 <h1 class="main-title">JUNGLE WARFARE</h1>
                 <div class="sub-title">AAA 16:9 WIDESCREEN FPS & VEHICLE SIMULATOR</div>
 
@@ -2281,6 +2338,106 @@
             </div>
         </div>
 
+        <!-- FIREBASE AUTHENTICATION MODAL -->
+        <div id="authModal" style="display:none; position:fixed; inset:0; background:rgba(2,6,23,0.95); backdrop-filter:blur(16px); z-index:100001; justify-content:center; align-items:center; padding:16px;">
+            <div style="background:linear-gradient(135deg, rgba(15,23,42,0.98) 0%, rgba(30,41,59,0.98) 100%); border:2px solid #38bdf8; border-radius:24px; padding:24px; width:100%; max-width:440px; box-shadow:0 0 50px rgba(56,189,248,0.4); color:#fff; font-family:'Rajdhani',sans-serif; position:relative;">
+                
+                <!-- Header -->
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(56,189,248,0.3); padding-bottom:12px; margin-bottom:16px;">
+                    <div>
+                        <span style="background:rgba(239,68,68,0.2); color:#ef4444; border:1px solid #ef4444; padding:2px 8px; border-radius:12px; font-size:10px; font-weight:800; letter-spacing:1px;">🔥 FIREBASE CLOUD AUTH</span>
+                        <h2 style="font-family:'Teko',sans-serif; font-size:28px; font-weight:700; color:#fff; margin-top:2px; line-height:1;">KABOX GAMER ACCOUNT</h2>
+                    </div>
+                    <button onclick="closeAuthModal()" style="background:rgba(239,68,68,0.2); border:1px solid #ef4444; border-radius:50%; width:34px; height:34px; color:#ef4444; font-size:16px; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center;">✖</button>
+                </div>
+
+                <!-- Google Quick Login Button -->
+                <button onclick="handleGoogleSignIn()" style="width:100%; padding:11px; background:linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%); border:none; border-radius:12px; color:#0f172a; font-family:'Rajdhani',sans-serif; font-size:15px; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; box-shadow:0 4px 15px rgba(255,255,255,0.2); letter-spacing:1px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+                    <span>SIGN IN WITH GOOGLE</span>
+                </button>
+
+                <div style="display:flex; align-items:center; gap:10px; margin:14px 0;">
+                    <div style="flex:1; height:1px; background:rgba(255,255,255,0.15);"></div>
+                    <span style="font-size:10px; font-weight:800; color:#94a3b8; letter-spacing:1px;">OR EMAIL ACCOUNT</span>
+                    <div style="flex:1; height:1px; background:rgba(255,255,255,0.15);"></div>
+                </div>
+
+                <!-- Auth Mode Toggle Tabs (Register vs Login) -->
+                <div style="display:flex; background:rgba(2,6,23,0.8); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:3px; margin-bottom:12px;">
+                    <button id="tabRegisterBtn" onclick="switchAuthTab('register')" style="flex:1; padding:6px; background:#38bdf8; border:none; border-radius:9px; color:#000; font-family:'Teko',sans-serif; font-size:16px; font-weight:700; cursor:pointer; transition:all 0.2s;">REGISTER NEW</button>
+                    <button id="tabLoginBtn" onclick="switchAuthTab('login')" style="flex:1; padding:6px; background:transparent; border:none; border-radius:9px; color:#94a3b8; font-family:'Teko',sans-serif; font-size:16px; font-weight:700; cursor:pointer; transition:all 0.2s;">LOGIN EXISTING</button>
+                </div>
+
+                <!-- Form Inputs -->
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                    <div id="authNameGroup">
+                        <label style="font-size:10px; font-weight:800; color:#38bdf8; letter-spacing:1px; text-transform:uppercase;">Player Callsign / Name</label>
+                        <input type="text" id="authNameInput" placeholder="e.g. Viper_99" style="width:100%; padding:8px 12px; background:rgba(2,6,23,0.85); border:1px solid rgba(56,189,248,0.4); border-radius:8px; color:#fff; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:14px; outline:none;" />
+                    </div>
+
+                    <div>
+                        <label style="font-size:10px; font-weight:800; color:#38bdf8; letter-spacing:1px; text-transform:uppercase;">Email Address</label>
+                        <input type="email" id="authEmailInput" placeholder="gamer@domain.com" style="width:100%; padding:8px 12px; background:rgba(2,6,23,0.85); border:1px solid rgba(56,189,248,0.4); border-radius:8px; color:#fff; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:14px; outline:none;" />
+                    </div>
+
+                    <div>
+                        <label style="font-size:10px; font-weight:800; color:#38bdf8; letter-spacing:1px; text-transform:uppercase;">Password</label>
+                        <input type="password" id="authPasswordInput" placeholder="••••••••" style="width:100%; padding:8px 12px; background:rgba(2,6,23,0.85); border:1px solid rgba(56,189,248,0.4); border-radius:8px; color:#fff; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:14px; outline:none;" />
+                    </div>
+
+                    <button id="authSubmitBtn" onclick="handleEmailAuthSubmit()" style="margin-top:6px; padding:10px; background:linear-gradient(135deg, #10b981 0%, #059669 100%); border:none; border-radius:10px; color:#fff; font-family:'Teko',sans-serif; font-size:22px; font-weight:700; cursor:pointer; letter-spacing:1.5px; box-shadow:0 0 20px rgba(16,185,129,0.4);">CREATE ACCOUNT & REGISTER</button>
+
+                    <div id="authStatusBox" style="font-size:12px; font-weight:700; text-align:center; padding:6px; border-radius:8px; display:none;"></div>
+                </div>
+
+                <div style="margin-top:12px; font-size:10px; color:#94a3b8; text-align:center; line-height:1.3;">
+                    🔒 Your stats, kills & scores are securely saved in Firebase Firestore database!
+                </div>
+            </div>
+        </div>
+
+        <!-- USER PROFILE CAREER STATS MODAL -->
+        <div id="profileModal" style="display:none; position:fixed; inset:0; background:rgba(2,6,23,0.95); backdrop-filter:blur(16px); z-index:100001; justify-content:center; align-items:center; padding:16px;">
+            <div style="background:linear-gradient(135deg, rgba(15,23,42,0.98) 0%, rgba(30,41,59,0.98) 100%); border:2px solid #34d399; border-radius:24px; padding:24px; width:100%; max-width:440px; box-shadow:0 0 50px rgba(52,211,153,0.4); color:#fff; font-family:'Rajdhani',sans-serif; position:relative;">
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(52,211,153,0.3); padding-bottom:12px; margin-bottom:16px;">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <div style="position:relative;">
+                            <img id="profModalImg" src="" style="width:48px; height:48px; border-radius:50%; border:2px solid #34d399; object-fit:cover; display:none;" />
+                            <div id="profModalIcon" style="width:48px; height:48px; border-radius:50%; border:2px solid #34d399; background:rgba(16,185,129,0.2); display:flex; align-items:center; justify-content:center; font-size:24px;">🪖</div>
+                        </div>
+                        <div>
+                            <h2 id="profModalName" style="font-family:'Teko',sans-serif; font-size:28px; font-weight:700; color:#fff; line-height:1;">SOLDIER</h2>
+                            <div id="profModalEmail" style="font-size:11px; color:#94a3b8; font-weight:700;">user@domain.com</div>
+                        </div>
+                    </div>
+                    <button onclick="closeProfileModal()" style="background:rgba(239,68,68,0.2); border:1px solid #ef4444; border-radius:50%; width:34px; height:34px; color:#ef4444; font-size:16px; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center;">✖</button>
+                </div>
+
+                <div style="font-size:11px; font-weight:800; color:#38bdf8; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px;">🔥 CAREER STATS (FIREBASE SYNCED)</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;">
+                    <div style="background:rgba(2,6,23,0.8); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:10px; text-align:center;">
+                        <div style="font-size:10px; color:#94a3b8; font-weight:800;">CAREER KILLS</div>
+                        <div id="profStatKills" style="font-family:'Teko',sans-serif; font-size:28px; font-weight:800; color:#ef4444; line-height:1;">0</div>
+                    </div>
+                    <div style="background:rgba(2,6,23,0.8); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:10px; text-align:center;">
+                        <div style="font-size:10px; color:#94a3b8; font-weight:800;">TOP SPEED</div>
+                        <div id="profStatSpeed" style="font-family:'Teko',sans-serif; font-size:28px; font-weight:800; color:#38bdf8; line-height:1;">0 KM/H</div>
+                    </div>
+                    <div style="background:rgba(2,6,23,0.8); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:10px; text-align:center;">
+                        <div style="font-size:10px; color:#94a3b8; font-weight:800;">LOOT SCRAP</div>
+                        <div id="profStatScrap" style="font-family:'Teko',sans-serif; font-size:28px; font-weight:800; color:#fbbf24; line-height:1;">$0</div>
+                    </div>
+                    <div style="background:rgba(2,6,23,0.8); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:10px; text-align:center;">
+                        <div style="font-size:10px; color:#94a3b8; font-weight:800;">GAMES PLAYED</div>
+                        <div id="profStatGames" style="font-family:'Teko',sans-serif; font-size:28px; font-weight:800; color:#34d399; line-height:1;">0</div>
+                    </div>
+                </div>
+
+                <button onclick="handleLogout()" style="width:100%; padding:10px; background:rgba(239,68,68,0.2); border:1px solid #ef4444; border-radius:12px; color:#ef4444; font-family:'Teko',sans-serif; font-size:20px; font-weight:700; cursor:pointer; letter-spacing:1px; box-shadow:0 0 15px rgba(239,68,68,0.3);">🚪 LOGOUT ACCOUNT</button>
+            </div>
+        </div>
+
         <!-- WAVE 100 GRAND VICTORY OVERLAY -->
         <div id="victoryOverlay">
             <div style="font-size:72px; margin-bottom:10px; filter:drop-shadow(0 0 20px #fef08a);">🏆</div>
@@ -2295,7 +2452,196 @@
 
     <!-- MAIN GAME ENGINE SCRIPT -->
     <script type="module">
-        import { submitLeaderboardScore, fetchTopLeaderboard } from './src/firebase.ts';
+        import { 
+            submitLeaderboardScore, 
+            fetchTopLeaderboard,
+            loginWithGoogle,
+            registerWithEmail,
+            loginWithEmail,
+            logoutUser,
+            subscribeToAuthChanges,
+            getUserProfileFromFirestore
+        } from './src/firebase.ts';
+
+        let authMode = 'register';
+        let currentUserProfile = null;
+
+        window.openAuthModal = function() {
+            const modal = document.getElementById('authModal');
+            if (modal) modal.style.display = 'flex';
+        };
+
+        window.closeAuthModal = function() {
+            const modal = document.getElementById('authModal');
+            if (modal) modal.style.display = 'none';
+        };
+
+        window.switchAuthTab = function(mode) {
+            authMode = mode;
+            const tabReg = document.getElementById('tabRegisterBtn');
+            const tabLog = document.getElementById('tabLoginBtn');
+            const nameGrp = document.getElementById('authNameGroup');
+            const submitBtn = document.getElementById('authSubmitBtn');
+            const statusBox = document.getElementById('authStatusBox');
+            if (statusBox) statusBox.style.display = 'none';
+
+            if (mode === 'register') {
+                if (tabReg) { tabReg.style.background = '#38bdf8'; tabReg.style.color = '#000'; }
+                if (tabLog) { tabLog.style.background = 'transparent'; tabLog.style.color = '#94a3b8'; }
+                if (nameGrp) nameGrp.style.display = 'block';
+                if (submitBtn) submitBtn.innerText = 'CREATE ACCOUNT & REGISTER';
+            } else {
+                if (tabLog) { tabLog.style.background = '#38bdf8'; tabLog.style.color = '#000'; }
+                if (tabReg) { tabReg.style.background = 'transparent'; tabReg.style.color = '#94a3b8'; }
+                if (nameGrp) nameGrp.style.display = 'none';
+                if (submitBtn) submitBtn.innerText = 'LOGIN TO ACCOUNT';
+            }
+        };
+
+        window.handleGoogleSignIn = async function() {
+            const statusBox = document.getElementById('authStatusBox');
+            if (statusBox) {
+                statusBox.innerText = '⏳ Connecting to Google Auth...';
+                statusBox.style.color = '#38bdf8';
+                statusBox.style.background = 'rgba(56,189,248,0.15)';
+                statusBox.style.display = 'block';
+            }
+
+            const res = await loginWithGoogle();
+            if (res.success) {
+                if (statusBox) {
+                    statusBox.innerText = '✅ Google Login Successful!';
+                    statusBox.style.color = '#34d399';
+                    statusBox.style.background = 'rgba(52,211,153,0.15)';
+                }
+                setTimeout(() => window.closeAuthModal(), 800);
+            } else {
+                if (statusBox) {
+                    statusBox.innerText = '❌ ' + (res.error || 'Google Login failed.');
+                    statusBox.style.color = '#ef4444';
+                    statusBox.style.background = 'rgba(239,68,68,0.15)';
+                }
+            }
+        };
+
+        window.handleEmailAuthSubmit = async function() {
+            const emailInput = document.getElementById('authEmailInput');
+            const passInput = document.getElementById('authPasswordInput');
+            const nameInput = document.getElementById('authNameInput');
+            const submitBtn = document.getElementById('authSubmitBtn');
+            const statusBox = document.getElementById('authStatusBox');
+
+            const email = emailInput?.value.trim();
+            const pass = passInput?.value.trim();
+            const name = nameInput?.value.trim();
+
+            if (!email || !pass) {
+                if (statusBox) {
+                    statusBox.innerText = '⚠️ Please enter both Email and Password!';
+                    statusBox.style.color = '#f59e0b';
+                    statusBox.style.background = 'rgba(245,158,11,0.15)';
+                    statusBox.style.display = 'block';
+                }
+                return;
+            }
+
+            if (submitBtn) submitBtn.disabled = true;
+            if (statusBox) {
+                statusBox.innerText = authMode === 'register' ? '⏳ Registering account...' : '⏳ Logging in...';
+                statusBox.style.color = '#38bdf8';
+                statusBox.style.background = 'rgba(56,189,248,0.15)';
+                statusBox.style.display = 'block';
+            }
+
+            let res;
+            if (authMode === 'register') {
+                res = await registerWithEmail(email, pass, name || '');
+            } else {
+                res = await loginWithEmail(email, pass);
+            }
+
+            if (submitBtn) submitBtn.disabled = false;
+
+            if (res.success) {
+                if (statusBox) {
+                    statusBox.innerText = authMode === 'register' ? '✅ Account Created & Logged In!' : '✅ Login Successful!';
+                    statusBox.style.color = '#34d399';
+                    statusBox.style.background = 'rgba(52,211,153,0.15)';
+                }
+                setTimeout(() => window.closeAuthModal(), 800);
+            } else {
+                if (statusBox) {
+                    statusBox.innerText = '❌ ' + (res.error || 'Authentication failed.');
+                    statusBox.style.color = '#ef4444';
+                    statusBox.style.background = 'rgba(239,68,68,0.15)';
+                }
+            }
+        };
+
+        window.openProfileModal = async function() {
+            const modal = document.getElementById('profileModal');
+            if (modal) modal.style.display = 'flex';
+        };
+
+        window.closeProfileModal = function() {
+            const modal = document.getElementById('profileModal');
+            if (modal) modal.style.display = 'none';
+        };
+
+        window.handleLogout = async function() {
+            await logoutUser();
+            window.closeProfileModal();
+        };
+
+        subscribeToAuthChanges(async (user) => {
+            const openAuthBtn = document.getElementById('openAuthBtn');
+            const userProfileBadge = document.getElementById('userProfileBadge');
+            const userDisplayName = document.getElementById('userDisplayName');
+            const userAvatarImg = document.getElementById('userAvatarImg');
+            const userAvatarIcon = document.getElementById('userAvatarIcon');
+            const playerNameInput = document.getElementById('playerNameInput');
+
+            if (user) {
+                if (openAuthBtn) openAuthBtn.style.display = 'none';
+                if (userProfileBadge) userProfileBadge.style.display = 'flex';
+                
+                const name = user.displayName || user.email?.split('@')[0] || 'WARRIOR';
+                if (userDisplayName) userDisplayName.innerText = name.toUpperCase();
+                if (playerNameInput) playerNameInput.value = name;
+
+                if (user.photoURL && userAvatarImg) {
+                    userAvatarImg.src = user.photoURL;
+                    userAvatarImg.style.display = 'block';
+                    if (userAvatarIcon) userAvatarIcon.style.display = 'none';
+                } else {
+                    if (userAvatarImg) userAvatarImg.style.display = 'none';
+                    if (userAvatarIcon) userAvatarIcon.style.display = 'inline';
+                }
+
+                // Fetch user career profile from Firestore
+                const profile = await getUserProfileFromFirestore(user.uid);
+                if (profile) {
+                    currentUserProfile = profile;
+                    const profName = document.getElementById('profModalName');
+                    const profEmail = document.getElementById('profModalEmail');
+                    const profKills = document.getElementById('profStatKills');
+                    const profSpeed = document.getElementById('profStatSpeed');
+                    const profScrap = document.getElementById('profStatScrap');
+                    const profGames = document.getElementById('profStatGames');
+
+                    if (profName) profName.innerText = (profile.displayName || name).toUpperCase();
+                    if (profEmail) profEmail.innerText = user.email || '';
+                    if (profKills) profKills.innerText = String(profile.kills || 0);
+                    if (profSpeed) profSpeed.innerText = Math.round(profile.topSpeed || 0) + ' KM/H';
+                    if (profScrap) profScrap.innerText = '$' + (profile.lootScrap || 0);
+                    if (profGames) profGames.innerText = String(profile.gamesPlayed || 0);
+                }
+            } else {
+                currentUserProfile = null;
+                if (openAuthBtn) openAuthBtn.style.display = 'flex';
+                if (userProfileBadge) userProfileBadge.style.display = 'none';
+            }
+        });
 
         window.openLeaderboardModal = async function() {
             const modal = document.getElementById('leaderboardModal');
@@ -2396,12 +2742,15 @@
         window.startFromIntro = function() {
             initAudio();
             checkAutoFullscreen();
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('landscape').catch(() => {});
+            }
             const introOverlay = document.getElementById('boxGamerIntro');
             if (introOverlay) {
                 introOverlay.style.opacity = '0';
                 setTimeout(() => {
                     introOverlay.style.display = 'none';
-                }, 600);
+                }, 400);
             }
         };
 
@@ -2430,6 +2779,10 @@
             if (!rotateOverlay) return;
             if (window.innerHeight > window.innerWidth) {
                 rotateOverlay.style.display = 'flex';
+                // Request orientation lock to landscape if supported by browser/device
+                if (screen.orientation && screen.orientation.lock) {
+                    screen.orientation.lock('landscape').catch(() => {});
+                }
             } else {
                 rotateOverlay.style.display = 'none';
                 checkAutoFullscreen();
@@ -2437,6 +2790,9 @@
         }
 
         function checkAutoFullscreen() {
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('landscape').catch(() => {});
+            }
             if (window.innerWidth > window.innerHeight) {
                 if (!document.fullscreenElement && !document.webkitFullscreenElement) {
                     const el = document.getElementById('gameWrapper') || document.documentElement;
@@ -2449,18 +2805,41 @@
             }
         }
 
-        window.addEventListener('orientationchange', () => setTimeout(checkAutoFullscreen, 300));
-        window.addEventListener('resize', checkAutoFullscreen);
+        window.addEventListener('orientationchange', () => setTimeout(checkAutoFullscreen, 200));
+        window.addEventListener('resize', checkOrientation);
+
+        // Prevent Pull-To-Refresh swipe reloads on mobile
+        window.addEventListener('touchstart', (e) => {
+            if (e.touches.length > 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        let lastTouchY = 0;
+        window.addEventListener('touchstart', (e) => {
+            lastTouchY = e.touches[0].clientY;
+        }, { passive: true });
+
+        window.addEventListener('touchmove', (e) => {
+            const touchY = e.touches[0].clientY;
+            const touchYDelta = touchY - lastTouchY;
+            if (window.scrollY === 0 && touchYDelta > 0) {
+                e.preventDefault(); // Prevents pull down to refresh
+            }
+        }, { passive: false });
 
         function startFromIntro() {
             initAudio();
             checkAutoFullscreen();
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('landscape').catch(() => {});
+            }
             const introOverlay = document.getElementById('boxGamerIntro');
             if (introOverlay) {
                 introOverlay.style.opacity = '0';
                 setTimeout(() => {
                     introOverlay.style.display = 'none';
-                }, 600);
+                }, 400);
             }
         }
 
@@ -2475,23 +2854,28 @@
 
             if (!introOverlay) return;
 
-            // Phase 1: 5.0 Seconds Initial 3D Greyish-White Title Showcase
+            // Attempt landscape orientation lock immediately when app loads
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('landscape').catch(() => {});
+            }
+
+            // Phase 1: Rapid 1.2s Title Showcase then start horizontal loading bar
             setTimeout(() => {
                 if (introWaitPhase) introWaitPhase.style.display = 'none';
                 if (loadingPhase) loadingPhase.style.display = 'flex';
 
                 let pct = 0;
                 const stages = [
-                    { threshold: 10, msg: "INITIALIZING BOX GAMER WARFARE ENGINE..." },
-                    { threshold: 30, msg: "LOADING TROPICAL GRAPHICS & ULTRA SHADERS..." },
-                    { threshold: 55, msg: "OPTIMIZING PRO TOUCH CONTROLS & FPS SENSITIVITY..." },
-                    { threshold: 80, msg: "SPAWNING SUPER CARS & ENEMY SQUADS AT 650M..." },
-                    { threshold: 100, msg: "BOX GAMER WARFARE ENGINE READY!" }
+                    { threshold: 10, msg: "INITIALIZING KABOX WARFARE ENGINE..." },
+                    { threshold: 35, msg: "LOADING TROPICAL MAP & SHADERS..." },
+                    { threshold: 65, msg: "OPTIMIZING PRO TOUCH CONTROLS..." },
+                    { threshold: 85, msg: "SPAWNING SUPER CARS & SQUADS..." },
+                    { threshold: 100, msg: "KABOX GAMER ENGINE READY!" }
                 ];
 
-                // Phase 2: 10.0 Seconds Smooth Animated Progress Bar (200 ticks * 50ms = 10,000ms)
+                // Phase 2: Ultra fast horizontal progress bar (~2.5 seconds total load time)
                 const loadInt = setInterval(() => {
-                    pct += 0.5;
+                    pct += 2.0; // Fast 2% per 50ms tick = 2.5s total load
                     if (pct > 100) pct = 100;
 
                     if (barFill) barFill.style.width = pct + '%';
@@ -2508,10 +2892,10 @@
                         setTimeout(() => {
                             if (loadingPhase) loadingPhase.style.display = 'none';
                             if (playPhase) playPhase.style.display = 'block';
-                        }, 400);
+                        }, 200);
                     }
                 }, 50);
-            }, 5000);
+            }, 1200);
         }
         window.addEventListener('load', runBoxGamerIntro);
 

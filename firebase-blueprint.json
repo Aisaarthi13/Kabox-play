@@ -1,5 +1,22 @@
 {
   "entities": {
+    "user": {
+      "title": "User Profile & Game Stats",
+      "description": "User profile and persistent gameplay statistics stored in Firestore",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "email": { "type": "string", "description": "User email address" },
+        "displayName": { "type": "string", "description": "Player display name" },
+        "photoURL": { "type": "string", "description": "Avatar photo URL" },
+        "kills": { "type": "number", "description": "Total kills recorded" },
+        "topSpeed": { "type": "number", "description": "Best driving speed in km/h" },
+        "lootScrap": { "type": "number", "description": "Total scrap gathered" },
+        "gamesPlayed": { "type": "number", "description": "Total games played" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Last stats update timestamp" }
+      },
+      "required": ["uid", "email", "displayName"]
+    },
     "leaderboard": {
       "title": "Leaderboard Entry",
       "description": "High score entries submitted by players",
@@ -12,6 +29,16 @@
         "createdAt": { "type": "string", "format": "date-time", "description": "Submission timestamp" }
       },
       "required": ["playerName", "kills", "topSpeed", "lootScrap", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/user" },
+      "description": "Private user profile and persistent stats"
+    },
+    "/leaderboard/{docId}": {
+      "schema": { "$ref": "#/entities/leaderboard" },
+      "description": "Global high scores leaderboard"
     }
   }
 }
