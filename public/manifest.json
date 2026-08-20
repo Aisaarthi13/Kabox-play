@@ -1,0 +1,17 @@
+{
+  "name": "Jungle Warfare & Pro Driving",
+  "short_name": "Jungle Warfare",
+  "description": "High-octane portrait FPS combat and pro vehicle driving simulation with drift mechanics, nitro boost, and realistic physics.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1320",
+  "theme_color": "#0b1320",
+  "icons": [
+    {
+      "src": "/pwabuilder-sw.js",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
