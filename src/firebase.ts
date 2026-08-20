@@ -297,7 +297,8 @@ export async function fetchUserPaymentTransactions(userId?: string): Promise<Tra
     }
     const snapshot = await getDocs(q);
     snapshot.forEach(docSnap => {
-      results.push({ id: docSnap.id, ...docSnap.data() } as TransactionRecord);
+      const data = docSnap.data() as Record<string, unknown>;
+      results.push(Object.assign({ id: docSnap.id }, data) as unknown as TransactionRecord);
     });
   } catch (err) {
     handleFirestoreError(err, OperationType.LIST, 'transactions');

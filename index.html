@@ -82,32 +82,117 @@
         #rotateOverlay {
             position: fixed;
             inset: 0;
-            background: rgba(11, 19, 32, 0.96);
-            backdrop-filter: blur(14px);
+            background: radial-gradient(circle at center, rgba(15, 23, 42, 0.98) 0%, rgba(2, 6, 23, 1.0) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             z-index: 99999;
             display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 24px;
+            padding: 28px 20px;
             color: white;
         }
-        .rotate-phone-icon {
-            font-size: 58px;
-            margin-bottom: 14px;
-            animation: phoneRotateAnim 2.5s infinite ease-in-out;
-            filter: drop-shadow(0 0 20px #34d399);
-        }
-        @keyframes phoneRotateAnim {
-            0% { transform: rotate(0deg); }
-            40% { transform: rotate(-90deg); }
-            80% { transform: rotate(-90deg); }
-            100% { transform: rotate(0deg); }
+
+        .rotate-phone-anim-box {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
         }
 
-        .device-notch {
-            display: none;
+        .rotate-phone-device {
+            width: 52px;
+            height: 94px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 3px solid #38bdf8;
+            border-radius: 12px;
+            position: relative;
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.5), inset 0 0 10px rgba(0, 0, 0, 0.8);
+            animation: phoneRotate3D 2.8s infinite cubic-bezier(0.45, 0, 0.55, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rotate-phone-screen {
+            width: 40px;
+            height: 76px;
+            background: rgba(14, 165, 233, 0.2);
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #38bdf8;
+            font-size: 16px;
+        }
+
+        .rotate-phone-notch {
+            position: absolute;
+            top: 4px;
+            width: 16px;
+            height: 3px;
+            background: #38bdf8;
+            border-radius: 2px;
+        }
+
+        .rotate-arrow-indicator {
+            position: absolute;
+            font-size: 80px;
+            color: rgba(52, 211, 153, 0.35);
+            animation: arrowSpin 2.8s infinite linear;
+            pointer-events: none;
+        }
+
+        @keyframes phoneRotate3D {
+            0% { transform: rotate(0deg) scale(1); }
+            20% { transform: rotate(0deg) scale(1.05); }
+            45% { transform: rotate(-90deg) scale(1.15); box-shadow: 0 0 40px rgba(52, 211, 153, 0.8); border-color: #34d399; }
+            75% { transform: rotate(-90deg) scale(1.15); box-shadow: 0 0 40px rgba(52, 211, 153, 0.8); border-color: #34d399; }
+            95% { transform: rotate(0deg) scale(1); border-color: #38bdf8; }
+            100% { transform: rotate(0deg) scale(1); border-color: #38bdf8; }
+        }
+
+        @keyframes arrowSpin {
+            0% { transform: rotate(0deg); opacity: 0.2; }
+            50% { transform: rotate(-180deg); opacity: 0.6; }
+            100% { transform: rotate(-360deg); opacity: 0.2; }
+        }
+
+        .rotate-title-main {
+            font-family: 'Teko', sans-serif;
+            font-size: 38px;
+            font-weight: 800;
+            color: #34d399;
+            letter-spacing: 2px;
+            line-height: 1;
+            margin-bottom: 8px;
+            text-shadow: 0 0 20px rgba(52, 211, 153, 0.6);
+        }
+
+        .rotate-sub-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: #e2e8f0;
+            max-width: 320px;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .rotate-hindi-hint {
+            font-size: 13px;
+            font-weight: 700;
+            color: #fbbf24;
+            letter-spacing: 0.5px;
+            background: rgba(251, 191, 36, 0.12);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 20px;
+            padding: 4px 16px;
         }
 
         /* ==========================================================================
@@ -2444,14 +2529,38 @@
         }
 
         /* ==========================================================================
-           7. BOX GAMER INTRO SPLASH OVERLAY & 3s LOADER - REMOVED FOR ZERO LOAD TIME
+           7. KABOX GAMER INTRO SPLASH OVERLAY & SHORT FAST LOADER
            ========================================================================== */
         #boxGamerIntro {
-            display: none !important;
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(15, 23, 42, 0.98) 0%, rgba(2, 6, 23, 1.0) 100%);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 24px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: opacity 0.4s ease-out;
         }
 
         #loadingScreen {
-            display: none !important;
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(15, 23, 42, 0.98) 0%, rgba(2, 6, 23, 1.0) 100%);
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 24px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: opacity 0.3s ease-out;
         }
 
         .bg-studio-badge {
@@ -2507,7 +2616,7 @@
         }
 
         #bgIntroWaitPhase {
-            display: flex;
+            display: none;
             flex-direction: column;
             align-items: center;
             gap: 12px;
@@ -2537,17 +2646,17 @@
         }
 
         #bgLoadingPhase {
-            display: none;
+            display: flex;
             flex-direction: column;
             align-items: center;
             width: 100%;
-            max-width: 360px;
-            animation: bgFadeUp 0.5s ease-out forwards;
+            max-width: 380px;
+            animation: bgFadeUp 0.3s ease-out forwards;
             gap: 8px;
         }
 
         .load-status {
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 800;
             color: #38bdf8;
             letter-spacing: 1.5px;
@@ -2571,12 +2680,12 @@
             background: linear-gradient(90deg, #10b981 0%, #34d399 50%, #38bdf8 100%);
             border-radius: 20px;
             box-shadow: 0 0 25px #34d399;
-            transition: width 0.1s linear;
+            transition: width 0.08s linear;
         }
 
         .load-percent {
             font-family: 'Teko', sans-serif;
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 800;
             color: #fbbf24;
             line-height: 1;
@@ -2584,8 +2693,8 @@
 
         #bgPlayPhase {
             display: none;
-            animation: bgFadeUp 0.5s ease-out forwards;
-            margin-top: 20px;
+            animation: bgFadeUp 0.3s ease-out forwards;
+            margin-top: 16px;
         }
 
         .bg-play-btn {
@@ -2622,12 +2731,23 @@
 
     <!-- ORIENTATION PROMPT OVERLAY FOR PORTRAIT PHONES -->
     <div id="rotateOverlay">
-        <div class="rotate-phone-icon">📱↻</div>
-        <div style="font-size:28px; font-weight:800; color:#34d399; font-family:'Teko',sans-serif; letter-spacing:2px; margin-bottom:8px;">
+        <div class="rotate-phone-anim-box">
+            <div class="rotate-phone-device">
+                <div class="rotate-phone-notch"></div>
+                <div class="rotate-phone-screen">
+                    <span>🎯</span>
+                </div>
+            </div>
+            <div class="rotate-arrow-indicator">↻</div>
+        </div>
+        <div class="rotate-title-main">
             PLEASE ROTATE YOUR PHONE
         </div>
-        <div style="font-size:14px; color:#cbd5e1; max-width:290px; line-height:1.4;">
-            Turn your device sideways for Full Screen iPad / Widescreen FPS gameplay!
+        <div class="rotate-sub-text">
+            Turn your device sideways for Full Screen Widescreen 16:9 FPS & Driving gameplay!
+        </div>
+        <div class="rotate-hindi-hint">
+            📱 Apne phone ko aada / landscape karein
         </div>
     </div>
 
@@ -2640,24 +2760,18 @@
             <h1 class="bg-title-main">KABOX GAMER</h1>
             <div class="bg-sub-text">PRO 16:9 FPS & COMBAT SIMULATOR</div>
 
-            <!-- PHASE 1: INITIAL TITLE SHOWCASE WITH FAST LOADING -->
-            <div id="bgIntroWaitPhase">
-                <div class="bg-spinner-ring"></div>
-                <div class="bg-wait-label">WELCOME TO KABOX GAMER</div>
-            </div>
-
-            <!-- PHASE 2: ANIMATED HORIZONTAL LOADING BAR -->
+            <!-- PHASE 1: ANIMATED HORIZONTAL FAST LOADING BAR -->
             <div id="bgLoadingPhase">
-                <div class="load-status" id="bgLoadStatus">INITIALIZING KABOX WARFARE ENGINE...</div>
+                <div class="load-status" id="bgLoadStatus">INITIALIZING TACTICAL BATTLEFIELD...</div>
                 <div class="load-bar-container">
                     <div class="load-bar-fill" id="bgLoadBarFill"></div>
                 </div>
                 <div class="load-percent" id="bgLoadPercent">0%</div>
             </div>
 
-            <!-- PHASE 3: PLAY OPTION APPEARS AFTER FAST LOADING -->
+            <!-- PHASE 2: PLAY OPTION (Optional quick skip) -->
             <div id="bgPlayPhase">
-                <button id="introPlayBtn" class="bg-play-btn" onclick="startFromIntro()">▶ PLAY GAME</button>
+                <button id="introPlayBtn" class="bg-play-btn" onclick="startFromIntro()">▶ ENTER BASE</button>
             </div>
         </div>
 
@@ -4627,7 +4741,7 @@
                 introOverlay.style.opacity = '0';
                 setTimeout(() => {
                     introOverlay.style.display = 'none';
-                }, 400);
+                }, 300);
             }
         };
 
@@ -4654,9 +4768,9 @@
         function checkOrientation() {
             const rotateOverlay = document.getElementById('rotateOverlay');
             if (!rotateOverlay) return;
-            if (window.innerHeight > window.innerWidth) {
+            const isPortrait = window.innerHeight > window.innerWidth;
+            if (isPortrait) {
                 rotateOverlay.style.display = 'flex';
-                // Request orientation lock to landscape if supported by browser/device
                 if (screen.orientation && screen.orientation.lock) {
                     screen.orientation.lock('landscape').catch(() => {});
                 }
@@ -4682,8 +4796,15 @@
             }
         }
 
-        window.addEventListener('orientationchange', () => setTimeout(checkAutoFullscreen, 200));
-        window.addEventListener('resize', checkOrientation);
+        window.addEventListener('orientationchange', () => {
+            setTimeout(() => {
+                checkOrientation();
+                checkAutoFullscreen();
+            }, 100);
+        });
+        window.addEventListener('resize', () => {
+            checkOrientation();
+        });
 
         // Prevent Pull-To-Refresh swipe reloads on mobile, while allowing full scrolling inside modals
         window.addEventListener('touchstart', (e) => {
@@ -4725,29 +4846,63 @@
             }
         }, { passive: true });
 
-        function startFromIntro() {
-            initAudio();
-            checkAutoFullscreen();
+        function runBoxGamerIntro() {
+            checkOrientation();
+            resizeAspect();
             if (screen.orientation && screen.orientation.lock) {
                 screen.orientation.lock('landscape').catch(() => {});
             }
-            const introOverlay = document.getElementById('boxGamerIntro');
-            if (introOverlay) {
-                introOverlay.style.display = 'none';
-            }
-        }
 
-        function runBoxGamerIntro() {
-            // Immediate startup - Zero loading delay
             const introOverlay = document.getElementById('boxGamerIntro');
-            if (introOverlay) introOverlay.style.display = 'none';
+            const bgFill = document.getElementById('bgLoadBarFill');
+            const bgPercent = document.getElementById('bgLoadPercent');
+            const bgStatus = document.getElementById('bgLoadStatus');
             const loadScreen = document.getElementById('loadingScreen');
             if (loadScreen) loadScreen.style.display = 'none';
 
-            if (screen.orientation && screen.orientation.lock) {
-                screen.orientation.lock('landscape').catch(() => {});
-            }
-            resizeAspect();
+            if (!introOverlay) return;
+
+            introOverlay.style.display = 'flex';
+            introOverlay.style.opacity = '1';
+
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 9) + 6;
+                if (progress > 100) progress = 100;
+
+                if (bgFill) bgFill.style.width = progress + '%';
+                if (bgPercent) bgPercent.innerText = progress + '%';
+
+                if (bgStatus) {
+                    if (progress < 30) bgStatus.innerText = 'INITIALIZING 3D ENGINE & SHADERS...';
+                    else if (progress < 65) bgStatus.innerText = 'LOADING JUNGLE WARFARE ASSETS...';
+                    else if (progress < 95) bgStatus.innerText = 'CALIBRATING WEAPONS & COMBAT CARS...';
+                    else bgStatus.innerText = 'READY! ENTERING MAIN BASE...';
+                }
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        introOverlay.style.opacity = '0';
+                        setTimeout(() => {
+                            introOverlay.style.display = 'none';
+                            checkOrientation();
+                        }, 300);
+                    }, 120);
+                }
+            }, 35); // Reaches 100% in ~0.6-0.8 seconds
+
+            // Foolproof failsafe: never stays stuck
+            setTimeout(() => {
+                clearInterval(interval);
+                if (introOverlay && introOverlay.style.display !== 'none') {
+                    introOverlay.style.opacity = '0';
+                    setTimeout(() => {
+                        introOverlay.style.display = 'none';
+                        checkOrientation();
+                    }, 200);
+                }
+            }, 1200);
         }
         window.addEventListener('load', runBoxGamerIntro);
 
@@ -5054,6 +5209,47 @@
                 gain.connect(audioCtx.destination);
                 osc.start(t);
                 osc.stop(t + 0.05);
+            } else if (type === 'woodBreak') {
+                // Crisp realistic wood crack, trunk snap and splintering rustle
+                const bs = Math.floor(audioCtx.sampleRate * 0.35);
+                const buf = audioCtx.createBuffer(1, bs, audioCtx.sampleRate);
+                const data = buf.getChannelData(0);
+                for (let i = 0; i < bs; i++) {
+                    const decay = Math.pow(1 - i / bs, 1.8);
+                    data[i] = (Math.random() * 2 - 1) * decay;
+                }
+
+                const src = audioCtx.createBufferSource();
+                src.buffer = buf;
+                src.playbackRate.value = 0.85 + Math.random() * 0.3;
+
+                const flt = audioCtx.createBiquadFilter();
+                flt.type = 'bandpass';
+                flt.frequency.setValueAtTime(650, t);
+                flt.frequency.exponentialRampToValueAtTime(140, t + 0.35);
+                flt.Q.value = 3.0;
+
+                const gain = audioCtx.createGain();
+                gain.gain.setValueAtTime(0.8, t);
+                gain.gain.exponentialRampToValueAtTime(0.01, t + 0.35);
+
+                src.connect(flt);
+                flt.connect(gain);
+                gain.connect(audioCtx.destination);
+                src.start(t);
+
+                // Low thud crunch
+                const thudOsc = audioCtx.createOscillator();
+                const thudGain = audioCtx.createGain();
+                thudOsc.type = 'sawtooth';
+                thudOsc.frequency.setValueAtTime(130, t);
+                thudOsc.frequency.exponentialRampToValueAtTime(30, t + 0.25);
+                thudGain.gain.setValueAtTime(0.7, t);
+                thudGain.gain.exponentialRampToValueAtTime(0.01, t + 0.25);
+                thudOsc.connect(thudGain);
+                thudGain.connect(audioCtx.destination);
+                thudOsc.start(t);
+                thudOsc.stop(t + 0.25);
             }
         }
 
@@ -5379,6 +5575,173 @@
         const scrapCars = [];
         const outpostHouses = [];
         const medkits = [];
+
+        // Global Destructible Tree System
+        const worldTrees = [];
+        let treeTrunksMesh, treeLeavesMesh, palmTrunksMesh, palmLeavesMesh;
+        const treeParticles = [];
+        const treeDebrisGroup = new THREE.Group();
+        scene.add(treeDebrisGroup);
+
+        const woodDebrisGeo = new THREE.BoxGeometry(0.5, 0.5, 1.0);
+        const woodDebrisMat = new THREE.MeshStandardMaterial({ color: 0x3d2712, roughness: 0.95 });
+        const leafDebrisGeo = new THREE.DodecahedronGeometry(1.0, 0);
+        const leafDebrisMat = new THREE.MeshStandardMaterial({ color: 0x287025, roughness: 0.8 });
+        const fallingTrunkGeo = new THREE.CylinderGeometry(1.0, 1.6, 10, 6);
+
+        function spawnTreeDestructionParticles(x, z, type, cause) {
+            // 1. Falling / Tilted Main Trunk Log with dynamic physics
+            const fallTrunk = new THREE.Mesh(fallingTrunkGeo, woodDebrisMat);
+            fallTrunk.position.set(x, 5.0, z);
+            treeDebrisGroup.add(fallTrunk);
+
+            const pushSpeed = cause === 'vehicle' ? (9 + Math.random() * 6) : (3 + Math.random() * 2);
+            const pushAngle = Math.random() * Math.PI * 2;
+
+            treeParticles.push({
+                mesh: fallTrunk,
+                type: 'trunk',
+                vx: Math.cos(pushAngle) * pushSpeed,
+                vy: cause === 'vehicle' ? 4.5 : 2.0,
+                vz: Math.sin(pushAngle) * pushSpeed,
+                vRotX: (Math.random() - 0.5) * 4,
+                vRotY: (Math.random() - 0.5) * 3,
+                vRotZ: (Math.random() - 0.5) * 4,
+                life: 3.5,
+                maxLife: 3.5
+            });
+
+            // 2. Flying Wood Splinters
+            for (let i = 0; i < 8; i++) {
+                const splinter = new THREE.Mesh(woodDebrisGeo, woodDebrisMat);
+                splinter.position.set(x + (Math.random() - 0.5) * 2, 2 + Math.random() * 3, z + (Math.random() - 0.5) * 2);
+                treeDebrisGroup.add(splinter);
+
+                const spSpeed = 5 + Math.random() * 10;
+                const spAngle = Math.random() * Math.PI * 2;
+                treeParticles.push({
+                    mesh: splinter,
+                    type: 'splinter',
+                    vx: Math.cos(spAngle) * spSpeed,
+                    vy: 3 + Math.random() * 7,
+                    vz: Math.sin(spAngle) * spSpeed,
+                    vRotX: (Math.random() - 0.5) * 8,
+                    vRotY: (Math.random() - 0.5) * 8,
+                    vRotZ: (Math.random() - 0.5) * 8,
+                    life: 2.5,
+                    maxLife: 2.5
+                });
+            }
+
+            // 3. Falling Lush Green Leaves
+            for (let i = 0; i < 12; i++) {
+                const leaf = new THREE.Mesh(leafDebrisGeo, leafDebrisMat);
+                leaf.position.set(x + (Math.random() - 0.5) * 5, 8 + Math.random() * 6, z + (Math.random() - 0.5) * 5);
+                treeDebrisGroup.add(leaf);
+
+                const lfSpeed = 3 + Math.random() * 7;
+                const lfAngle = Math.random() * Math.PI * 2;
+                treeParticles.push({
+                    mesh: leaf,
+                    type: 'leaf',
+                    vx: Math.cos(lfAngle) * lfSpeed,
+                    vy: 2 + Math.random() * 5,
+                    vz: Math.sin(lfAngle) * lfSpeed,
+                    vRotX: (Math.random() - 0.5) * 6,
+                    vRotY: (Math.random() - 0.5) * 6,
+                    vRotZ: (Math.random() - 0.5) * 6,
+                    life: 2.8,
+                    maxLife: 2.8
+                });
+            }
+        }
+
+        function destroyTree(tree, cause = 'bullet') {
+            if (!tree || tree.isDestroyed) return;
+            tree.isDestroyed = true;
+
+            // Remove from Three.js InstancedMesh
+            const zeroMat = new THREE.Matrix4().makeScale(0, 0, 0);
+            if (tree.type === 'canopy') {
+                if (treeTrunksMesh) {
+                    treeTrunksMesh.setMatrixAt(tree.index, zeroMat);
+                    treeTrunksMesh.instanceMatrix.needsUpdate = true;
+                }
+                if (treeLeavesMesh) {
+                    treeLeavesMesh.setMatrixAt(tree.index, zeroMat);
+                    treeLeavesMesh.instanceMatrix.needsUpdate = true;
+                }
+            } else if (tree.type === 'palm') {
+                if (palmTrunksMesh) {
+                    palmTrunksMesh.setMatrixAt(tree.index, zeroMat);
+                    palmTrunksMesh.instanceMatrix.needsUpdate = true;
+                }
+                if (palmLeavesMesh) {
+                    palmLeavesMesh.setMatrixAt(tree.index, zeroMat);
+                    palmLeavesMesh.instanceMatrix.needsUpdate = true;
+                }
+            }
+
+            // Remove from Collidable broadphase
+            const cIdx = collidableCoords.findIndex(c => c.treeId === tree.id);
+            if (cIdx !== -1) {
+                collidableCoords.splice(cIdx, 1);
+            }
+
+            // Play procedural audio
+            playSound('woodBreak');
+
+            // Physical particle debris
+            spawnTreeDestructionParticles(tree.x, tree.z, tree.type, cause);
+
+            // Announcer HUD notification
+            if (typeof triggerAnnouncer === 'function') {
+                if (cause === 'vehicle') {
+                    triggerAnnouncer('💥 TREE FELLED BY VEHICLE!');
+                } else {
+                    triggerAnnouncer('🪓 TREE DESTROYED BY WEAPON!');
+                }
+            }
+        }
+
+        function updateTreeParticles(delta) {
+            for (let i = treeParticles.length - 1; i >= 0; i--) {
+                const p = treeParticles[i];
+                p.life -= delta;
+
+                if (p.life <= 0) {
+                    treeDebrisGroup.remove(p.mesh);
+                    if (p.mesh.geometry) p.mesh.geometry.dispose();
+                    treeParticles.splice(i, 1);
+                    continue;
+                }
+
+                // Gravity & Movement
+                p.vy -= 24 * delta;
+                p.mesh.position.x += p.vx * delta;
+                p.mesh.position.y += p.vy * delta;
+                p.mesh.position.z += p.vz * delta;
+
+                // Ground Settle
+                if (p.mesh.position.y <= 0.3) {
+                    p.mesh.position.y = 0.3;
+                    p.vy = -p.vy * 0.25;
+                    p.vx *= 0.85;
+                    p.vz *= 0.85;
+                }
+
+                // Rotations
+                p.mesh.rotation.x += p.vRotX * delta;
+                if (p.vRotY) p.mesh.rotation.y += p.vRotY * delta;
+                p.mesh.rotation.z += p.vRotZ * delta;
+
+                // Fade out scale
+                if (p.life < 0.6) {
+                    const sc = Math.max(0.01, p.life / 0.6);
+                    p.mesh.scale.set(sc, sc, sc);
+                }
+            }
+        }
 
         let selectedVehicleType = 'apex_gt';
 
@@ -5830,8 +6193,8 @@
             const dummy = new THREE.Object3D();
 
             // 1. 260 Dense Canopy Trees (INSTANCED MESH)
-            const treeTrunksMesh = new THREE.InstancedMesh(trunkGeo, woodMat, 260);
-            const treeLeavesMesh = new THREE.InstancedMesh(leafGeo, leafMat, 260);
+            treeTrunksMesh = new THREE.InstancedMesh(trunkGeo, woodMat, 260);
+            treeLeavesMesh = new THREE.InstancedMesh(leafGeo, leafMat, 260);
             let treeIdx = 0;
             for (let i = 0; i < 260; i++) {
                 const tx = (Math.random() - 0.5) * 1700;
@@ -5848,7 +6211,19 @@
                     dummy.updateMatrix();
                     treeLeavesMesh.setMatrixAt(treeIdx, dummy.matrix);
 
-                    collidableCoords.push({ x: tx, z: tz, radius: 2.2 });
+                    const treeId = 'canopy_' + treeIdx;
+                    const treeObj = {
+                        id: treeId,
+                        type: 'canopy',
+                        index: treeIdx,
+                        x: tx,
+                        z: tz,
+                        radius: 2.4,
+                        height: 24,
+                        isDestroyed: false
+                    };
+                    worldTrees.push(treeObj);
+                    collidableCoords.push({ x: tx, z: tz, radius: 2.2, isTree: true, treeId: treeId });
                     treeIdx++;
                 }
             }
@@ -5857,8 +6232,8 @@
             scene.add(treeTrunksMesh, treeLeavesMesh);
 
             // 2. 90 Tropical Curved Palms (INSTANCED MESH)
-            const palmTrunksMesh = new THREE.InstancedMesh(palmGeo, palmWoodMat, 90);
-            const palmLeavesMesh = new THREE.InstancedMesh(leafGeo, leafMat, 90);
+            palmTrunksMesh = new THREE.InstancedMesh(palmGeo, palmWoodMat, 90);
+            palmLeavesMesh = new THREE.InstancedMesh(leafGeo, leafMat, 90);
             let palmIdx = 0;
             for (let i = 0; i < 90; i++) {
                 const px = (Math.random() - 0.5) * 1600;
@@ -5876,7 +6251,19 @@
                     dummy.updateMatrix();
                     palmLeavesMesh.setMatrixAt(palmIdx, dummy.matrix);
 
-                    collidableCoords.push({ x: px, z: pz, radius: 1.8 });
+                    const treeId = 'palm_' + palmIdx;
+                    const treeObj = {
+                        id: treeId,
+                        type: 'palm',
+                        index: palmIdx,
+                        x: px,
+                        z: pz,
+                        radius: 2.0,
+                        height: 20,
+                        isDestroyed: false
+                    };
+                    worldTrees.push(treeObj);
+                    collidableCoords.push({ x: px, z: pz, radius: 1.8, isTree: true, treeId: treeId });
                     palmIdx++;
                 }
             }
@@ -7180,8 +7567,10 @@
                 const targets = [];
                 enemies.forEach(e => { if (!e.isDead) targets.push(...e.hitboxes); });
 
+                let enemyHitDist = null;
                 const hits = raycaster.intersectObjects(targets);
                 if (hits.length > 0) {
+                    enemyHitDist = hits[0].distance;
                     const hitObj = hits[0].object;
                     const hitEnemy = enemies.find(e => e.hitboxes.includes(hitObj));
 
@@ -7219,6 +7608,41 @@
                             }
                         }
                     }
+                }
+
+                // Check bullet raycast intersection on destructible trees
+                const rayOrigin = raycaster.ray.origin;
+                const rayDir = raycaster.ray.direction;
+                let closestTree = null;
+                let minTreeDist = 9999;
+
+                for (let i = 0; i < worldTrees.length; i++) {
+                    const tree = worldTrees[i];
+                    if (tree.isDestroyed) continue;
+
+                    const dx = tree.x - rayOrigin.x;
+                    const dz = tree.z - rayOrigin.z;
+                    const dot = dx * rayDir.x + dz * rayDir.z;
+                    if (dot < 1.0 || dot > 380) continue;
+
+                    const perpSq = (dx * dx + dz * dz) - (dot * dot);
+                    const hitRad = tree.radius + 1.2;
+                    if (perpSq < hitRad * hitRad) {
+                        const hitY = rayOrigin.y + rayDir.y * dot;
+                        if (hitY >= -1.0 && hitY <= tree.height + 4) {
+                            if (dot < minTreeDist) {
+                                if (enemyHitDist === null || dot < enemyHitDist) {
+                                    minTreeDist = dot;
+                                    closestTree = tree;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (closestTree) {
+                    destroyTree(closestTree, 'bullet');
+                    triggerHitMarker();
                 }
             }
         }
@@ -7365,11 +7789,45 @@
 
             document.getElementById('startScreen').style.display = 'none';
             const loadScreen = document.getElementById('loadingScreen');
-            if (loadScreen) loadScreen.style.display = 'none';
+            if (loadScreen) {
+                loadScreen.style.display = 'flex';
+                loadScreen.style.opacity = '1';
+                const loadBar = document.getElementById('loadBarFill');
+                const loadStatus = document.getElementById('loadStatusText');
+                const loadPercent = document.getElementById('loadPercentText');
+                let p = 0;
+                const deployInt = setInterval(() => {
+                    p += 25;
+                    if (p > 100) p = 100;
+                    if (loadBar) loadBar.style.width = p + '%';
+                    if (loadPercent) loadPercent.innerText = p + '%';
+                    if (loadStatus) loadStatus.innerText = p < 50 ? 'DEPLOYING WEAPONS SQUAD...' : 'SPAWNING SQUAD & ENEMIES...';
+                    if (p >= 100) {
+                        clearInterval(deployInt);
+                        setTimeout(() => {
+                            loadScreen.style.opacity = '0';
+                            setTimeout(() => {
+                                loadScreen.style.display = 'none';
+                                document.getElementById('ui').style.display = 'block';
+                                spawnEnemyWave(1);
+                            }, 150);
+                        }, 80);
+                    }
+                }, 35); // 150ms total deployment
 
-            // Instant deploy into battlefield
-            document.getElementById('ui').style.display = 'block';
-            spawnEnemyWave(1);
+                // Failsafe timeout
+                setTimeout(() => {
+                    clearInterval(deployInt);
+                    if (loadScreen.style.display !== 'none') {
+                        loadScreen.style.display = 'none';
+                        document.getElementById('ui').style.display = 'block';
+                        if (enemies.length === 0) spawnEnemyWave(1);
+                    }
+                }, 500);
+            } else {
+                document.getElementById('ui').style.display = 'block';
+                spawnEnemyWave(1);
+            }
         });
 
         function redeployMission() {
@@ -7543,7 +8001,7 @@
                 // Vehicle Solid Physics Collision vs Trees & Rocks (Fast Spatial Broadphase)
                 const cpx = car.group.position.x;
                 const cpz = car.group.position.z;
-                for (let i = 0; i < collidableCoords.length; i++) {
+                for (let i = collidableCoords.length - 1; i >= 0; i--) {
                     const c = collidableCoords[i];
                     const dx = cpx - c.x;
                     const dz = cpz - c.z;
@@ -7551,6 +8009,20 @@
                         const distSq = dx * dx + dz * dz;
                         const minDist = c.radius + 2.2;
                         if (distSq < minDist * minDist && distSq > 0.0001) {
+                            // Destructible Tree Smash by Vehicle
+                            if (c.isTree) {
+                                const treeObj = worldTrees.find(t => t.id === c.treeId);
+                                if (treeObj && !treeObj.isDestroyed) {
+                                    destroyTree(treeObj, 'vehicle');
+                                    if (Math.abs(car.speed) > 10) {
+                                        car.health = Math.max(0, car.health - 4);
+                                        playSound('carCrash');
+                                        car.speed *= 0.72; // Plough through tree
+                                    }
+                                    continue;
+                                }
+                            }
+
                             const dist = Math.sqrt(distSq);
                             const overlap = minDist - dist;
                             car.group.position.x += (dx / dist) * overlap;
@@ -7976,11 +8448,15 @@
                 }
             });
 
-            // 4. RADAR MINIMAP UPDATE (Throttled for 60FPS zero lag)
+            // 4. RADAR MINIMAP & PARTICLE SIMULATION (Throttled for 60FPS zero lag)
             frameCount++;
             if (frameCount % 3 === 0) {
                 updateMinimap();
             }
+
+            // Update Dynamic 3D Tree Splinters, Logs and Smoke Particles
+            updateTreeParticles(delta);
+            updateCarParticles(delta);
 
             renderer.render(scene, camera);
         }
