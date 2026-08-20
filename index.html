@@ -2725,6 +2725,18 @@
             0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
         }
+
+        /* AUTO ORIENTATION DETECTION: Instant response on vertical screen */
+        @media screen and (orientation: portrait) {
+            #rotateOverlay {
+                display: flex !important;
+            }
+        }
+        @media screen and (orientation: landscape) {
+            #rotateOverlay {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -2755,7 +2767,7 @@
     <div id="gameWrapper">
 
         <!-- KABOX GAMER INTRO SPLASH SCREEN -->
-        <div id="boxGamerIntro">
+        <div id="boxGamerIntro" style="display: flex; opacity: 1;">
             <div class="bg-studio-badge">🎮 KABOX GAMER GAMING STUDIO</div>
             <h1 class="bg-title-main">KABOX GAMER</h1>
             <div class="bg-sub-text">PRO 16:9 FPS & COMBAT SIMULATOR</div>
@@ -2764,16 +2776,76 @@
             <div id="bgLoadingPhase">
                 <div class="load-status" id="bgLoadStatus">INITIALIZING TACTICAL BATTLEFIELD...</div>
                 <div class="load-bar-container">
-                    <div class="load-bar-fill" id="bgLoadBarFill"></div>
+                    <div class="load-bar-fill" id="bgLoadBarFill" style="width: 0%;"></div>
                 </div>
                 <div class="load-percent" id="bgLoadPercent">0%</div>
             </div>
 
-            <!-- PHASE 2: PLAY OPTION (Optional quick skip) -->
-            <div id="bgPlayPhase">
-                <button id="introPlayBtn" class="bg-play-btn" onclick="startFromIntro()">▶ ENTER BASE</button>
+            <!-- PHASE 2: PLAY OPTION (Quick skip / Direct entry) -->
+            <div id="bgPlayPhase" style="display: block; margin-top: 12px;">
+                <button id="introPlayBtn" class="bg-play-btn" onclick="startFromIntro()" style="font-size: 24px; padding: 10px 32px; border-radius: 12px; cursor: pointer;">▶ ENTER BASE / SKIP</button>
             </div>
         </div>
+
+        <!-- AUTONOMOUS IMMEDIATE LOADER SCRIPT (Guarantees zero-lag smooth 0% -> 100% loading & dismiss) -->
+        <script>
+            (function() {
+                var progress = 0;
+                var fill = document.getElementById('bgLoadBarFill');
+                var percent = document.getElementById('bgLoadPercent');
+                var status = document.getElementById('bgLoadStatus');
+                var intro = document.getElementById('boxGamerIntro');
+
+                window.startFromIntro = function() {
+                    if (intro) {
+                        intro.style.transition = 'opacity 0.25s ease-out';
+                        intro.style.opacity = '0';
+                        setTimeout(function() {
+                            intro.style.display = 'none';
+                        }, 250);
+                    }
+                };
+
+                var loadInterval = setInterval(function() {
+                    progress += Math.floor(Math.random() * 12) + 8;
+                    if (progress > 100) progress = 100;
+
+                    if (fill) fill.style.width = progress + '%';
+                    if (percent) percent.innerText = progress + '%';
+
+                    if (status) {
+                        if (progress < 25) status.innerText = 'INITIALIZING 3D ENGINE & SHADERS...';
+                        else if (progress < 60) status.innerText = 'LOADING JUNGLE WARFARE ASSETS...';
+                        else if (progress < 90) status.innerText = 'CALIBRATING WEAPONS & COMBAT CARS...';
+                        else status.innerText = 'READY! ENTERING MAIN BASE...';
+                    }
+
+                    if (progress >= 100) {
+                        clearInterval(loadInterval);
+                        setTimeout(function() {
+                            if (intro) {
+                                intro.style.transition = 'opacity 0.3s ease-out';
+                                intro.style.opacity = '0';
+                                setTimeout(function() {
+                                    intro.style.display = 'none';
+                                }, 300);
+                            }
+                        }, 120);
+                    }
+                }, 30); // Completes in ~350ms smoothly
+
+                // Hard failsafe: never remain visible longer than 750ms
+                setTimeout(function() {
+                    clearInterval(loadInterval);
+                    if (intro && intro.style.display !== 'none') {
+                        intro.style.opacity = '0';
+                        setTimeout(function() {
+                            intro.style.display = 'none';
+                        }, 200);
+                    }
+                }, 750);
+            })();
+        </script>
 
         <!-- START SCREEN & GARAGE MENU -->
         <div id="startScreen">
@@ -4902,9 +4974,16 @@
                         checkOrientation();
                     }, 200);
                 }
-            }, 1200);
+            }, 800);
         }
-        window.addEventListener('load', runBoxGamerIntro);
+
+        window.runBoxGamerIntro = runBoxGamerIntro;
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            runBoxGamerIntro();
+        } else {
+            window.addEventListener('DOMContentLoaded', runBoxGamerIntro);
+            window.addEventListener('load', runBoxGamerIntro);
+        }
 
         function resizeAspect() {
             gameWidth = window.innerWidth;
