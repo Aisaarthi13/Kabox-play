@@ -6,6 +6,7 @@ import {
   addDoc, 
   getDocs, 
   query, 
+  where,
   orderBy, 
   limit,
   doc,
@@ -46,6 +47,18 @@ export interface LeaderboardEntry {
   kills: number;
   topSpeed: number;
   lootScrap: number;
+  createdAt: string;
+}
+
+export interface TransactionRecord {
+  id?: string;
+  userId: string;
+  orderId: string;
+  gunId: string;
+  gunName: string;
+  amount: number;
+  paymentMethod: string;
+  status: string;
   createdAt: string;
 }
 
@@ -239,3 +252,67 @@ export async function fetchTopLeaderboard(maxLimit = 15): Promise<LeaderboardEnt
     return [];
   }
 }
+
+// PAYMENT TRANSACTIONS HANDLERS
+export async function savePaymentTransactionToFirestore(trans: Omit<TransactionRecord, 'id'>): Promise<TransactionRecord | null> {
+  const record: Omit<TransactionRecord, 'id'> = {
+    userId: trans.userId || auth.currentUser?.uid || 'GUEST',
+    orderId: trans.orderId || `ORD_${Date.now()}`,
+    gunId: trans.gunId,
+    gunName: trans.gunName,
+    amount: trans.amount,
+    paymentMethod: trans.paymentMethod || 'FamPay UPI Gateway',
+    status: trans.status || 'PAID',
+    createdAt: trans.createdAt || new Date().toISOString()
+  };
+
+  // Always persist locally for offline/instant availability
+  try {
+    const localHistory = JSON.parse(localStorage.getItem('jungle_warfare_payments') || '[]');
+    localHistory.unshift(record);
+    localStorage.setItem('jungle_warfare_payments', JSON.stringify(localHistory.slice(0, 50)));
+  } catch (e) {}
+
+  try {
+    const colRef = collection(db, 'transactions');
+    const docRef = await addDoc(colRef, record);
+    return { id: docRef.id, ...record };
+  } catch (err) {
+    handleFirestoreError(err, OperationType.WRITE, 'transactions');
+    return { id: `local_${Date.now()}`, ...record };
+  }
+}
+
+export async function fetchUserPaymentTransactions(userId?: string): Promise<TransactionRecord[]> {
+  const currentUid = userId || auth.currentUser?.uid;
+  const results: TransactionRecord[] = [];
+
+  try {
+    const colRef = collection(db, 'transactions');
+    let q;
+    if (currentUid && currentUid !== 'GUEST') {
+      q = query(colRef, where('userId', '==', currentUid), orderBy('createdAt', 'desc'), limit(20));
+    } else {
+      q = query(colRef, orderBy('createdAt', 'desc'), limit(20));
+    }
+    const snapshot = await getDocs(q);
+    snapshot.forEach(docSnap => {
+      results.push({ id: docSnap.id, ...docSnap.data() } as TransactionRecord);
+    });
+  } catch (err) {
+    handleFirestoreError(err, OperationType.LIST, 'transactions');
+  }
+
+  // If firestore returned 0 results (or error), fallback to local transaction history
+  if (results.length === 0) {
+    try {
+      const localHistory: TransactionRecord[] = JSON.parse(localStorage.getItem('jungle_warfare_payments') || '[]');
+      if (Array.isArray(localHistory)) {
+        return localHistory;
+      }
+    } catch (e) {}
+  }
+
+  return results;
+}
+

@@ -29,6 +29,22 @@
         "createdAt": { "type": "string", "format": "date-time", "description": "Submission timestamp" }
       },
       "required": ["playerName", "kills", "topSpeed", "lootScrap", "createdAt"]
+    },
+    "transaction": {
+      "title": "Payment Transaction Record",
+      "description": "Gun shop purchase transaction records",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "UID of the user who made the purchase" },
+        "orderId": { "type": "string", "description": "Unique order ID" },
+        "gunId": { "type": "string", "description": "Weapon ID" },
+        "gunName": { "type": "string", "description": "Weapon title" },
+        "amount": { "type": "number", "description": "Payment amount in INR" },
+        "paymentMethod": { "type": "string", "description": "Payment gateway method" },
+        "status": { "type": "string", "description": "Transaction status" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Transaction timestamp" }
+      },
+      "required": ["userId", "orderId", "gunId", "gunName", "amount", "status", "createdAt"]
     }
   },
   "firestore": {
@@ -39,6 +55,10 @@
     "/leaderboard/{docId}": {
       "schema": { "$ref": "#/entities/leaderboard" },
       "description": "Global high scores leaderboard"
+    },
+    "/transactions/{docId}": {
+      "schema": { "$ref": "#/entities/transaction" },
+      "description": "Completed user payment and weapon purchase transactions"
     }
   }
 }

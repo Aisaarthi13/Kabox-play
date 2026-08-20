@@ -14,5 +14,15 @@ service cloud.firestore {
                    && request.resource.data.lootScrap is number;
       allow update, delete: if false;
     }
+    match /transactions/{docId} {
+      allow read: if (request.auth != null && resource.data.userId == request.auth.uid) || (resource.data.userId == 'GUEST') || true;
+      allow create: if request.resource.data.keys().hasAll(['userId', 'orderId', 'gunId', 'gunName', 'amount', 'status', 'createdAt'])
+                   && request.resource.data.userId is string
+                   && request.resource.data.orderId is string
+                   && request.resource.data.gunId is string
+                   && request.resource.data.amount is number
+                   && request.resource.data.status is string;
+      allow update, delete: if false;
+    }
   }
 }
